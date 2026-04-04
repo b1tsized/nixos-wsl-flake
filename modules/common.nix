@@ -59,6 +59,7 @@ in
       # Build tools
       gnumake
       postgresql
+      openssl
 
       # Search and CLI tools
       ripgrep
