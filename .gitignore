@@ -1,0 +1,12 @@
+# Secrets (contains personal info)
+secrets.nix
+
+# Nix build artifacts
+result
+result-*
+
+# Editor files
+.direnv/
+.envrc
+*.swp
+*~
