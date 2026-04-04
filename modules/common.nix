@@ -68,7 +68,7 @@
     ];
 
     home.sessionVariables = {
-      SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
+      # SSH_AUTH_SOCK is set in host-specific config (shared socket for WSL)
       EDITOR = "vim";
       VISUAL = "vim";
       CLAUDE_INSTALL_TYPE = "native";
@@ -150,12 +150,12 @@
         identityFile = "~/.ssh/github_signing.pub";
         identitiesOnly = true;
         extraOptions = {
-          IdentityAgent = "~/.1password/agent.sock";
+          IdentityAgent = "/mnt/wsl/1password-agent.sock";
         };
       };
       matchBlocks."*" = {
         extraOptions = {
-          IdentityAgent = "~/.1password/agent.sock";
+          IdentityAgent = "/mnt/wsl/1password-agent.sock";
         };
       };
     };

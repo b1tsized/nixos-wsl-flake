@@ -2,6 +2,8 @@
 
 let
   npiperelay = "/mnt/c/Users/${secrets.windowsUser}/.local/bin/npiperelay.exe";
+  # Shared socket location accessible by all WSL instances
+  sharedSocketPath = "/mnt/wsl/1password-agent.sock";
 in {
   # WSL-specific settings
   wsl.enable = true;
@@ -25,16 +27,15 @@ in {
         After = [ "default.target" ];
       };
       Service = {
-        ExecStartPre = [
-          "${pkgs.coreutils}/bin/mkdir -p %h/.1password"
-          "${pkgs.coreutils}/bin/rm -f %h/.1password/agent.sock"
-        ];
+        # Only start if socket doesn't exist (another instance may have created it)
+        ExecCondition = "${pkgs.bash}/bin/bash -c '! test -S ${sharedSocketPath}'";
         ExecStart = ''
           ${pkgs.socat}/bin/socat \
-            UNIX-LISTEN:%h/.1password/agent.sock,fork \
+            UNIX-LISTEN:${sharedSocketPath},fork,mode=777 \
             EXEC:"${npiperelay} -ei -s //./pipe/openssh-ssh-agent",nofork
         '';
         Restart = "on-failure";
+        RestartSec = "5s";
       };
       Install = {
         WantedBy = [ "default.target" ];
@@ -51,6 +52,7 @@ in {
     # WSL-specific environment
     home.sessionVariables = {
       BROWSER = "wslview";
+      SSH_AUTH_SOCK = sharedSocketPath;
     };
 
     home.stateVersion = "25.11";
