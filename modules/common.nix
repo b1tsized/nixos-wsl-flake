@@ -4,7 +4,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "1password-cli"
-    "claude-code"
   ];
 
   # Home Manager shared configuration
@@ -20,7 +19,7 @@
       git
       vim
       _1password-cli
-      claude-code
+      # claude-code  # Removed - install via: bun install -g @anthropic-ai/claude-code
 
       # Cloud & DevOps
       awscli2
