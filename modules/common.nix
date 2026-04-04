@@ -1,5 +1,12 @@
-{ config, lib, pkgs, secrets, ... }:
+{ config, lib, pkgs, secrets, prisma-utils, ... }:
 
+let
+  prisma = prisma-utils.lib.prisma-factory {
+    inherit pkgs;
+    hash = "";  # Leave empty first, nix will tell you the correct hash
+    bunLock = /home/nixos/github.com/nocturneprintlabs.com/nocturne-app/bun.lock;
+  };
+in
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -76,7 +83,7 @@
       EDITOR = "vim";
       VISUAL = "vim";
       CLAUDE_INSTALL_TYPE = "native";
-    };
+    } // prisma.env;
 
     # Zsh configuration
     programs.zsh = {
