@@ -94,11 +94,14 @@ cd nixos-wsl-flake
 
 ### 2. Create your secrets file
 
+Secrets are stored outside the repo at `~/.config/nixos-secrets/secrets.nix`:
+
 ```bash
-cp secrets.nix.template secrets.nix
+mkdir -p ~/.config/nixos-secrets
+cp secrets.nix.template ~/.config/nixos-secrets/secrets.nix
 ```
 
-Edit `secrets.nix` with your personal information:
+Edit `~/.config/nixos-secrets/secrets.nix` with your personal information:
 
 ```nix
 {
@@ -138,13 +141,15 @@ sudo nixos-rebuild switch --flake .#wsl-dev
 .
 ├── flake.nix              # Flake entry point, pins dependencies
 ├── flake.lock             # Locked dependency versions
-├── secrets.nix            # Personal config (gitignored)
 ├── secrets.nix.template   # Template for secrets
 ├── hosts/
 │   └── wsl-dev/           # WSL-specific host config
 │       └── default.nix
 └── modules/
     └── common.nix         # Shared configuration
+
+~/.config/nixos-secrets/
+└── secrets.nix            # Personal config (outside repo)
 ```
 
 ### What's Included

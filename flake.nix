@@ -18,7 +18,9 @@
   outputs = { self, nixpkgs, home-manager, nixos-wsl, ... }:
     let
       system = "x86_64-linux";
-      secrets = import ./secrets.nix;
+      # Secrets are stored outside the repo at ~/.config/nixos-secrets/secrets.nix
+      secretsPath = builtins.getEnv "HOME" + "/.config/nixos-secrets/secrets.nix";
+      secrets = import secretsPath;
     in {
       nixosConfigurations = {
         wsl-dev = nixpkgs.lib.nixosSystem {
