@@ -25,7 +25,10 @@ in {
         After = [ "default.target" ];
       };
       Service = {
-        ExecStartPre = "${pkgs.coreutils}/bin/rm -f %h/.1password/agent.sock";
+        ExecStartPre = [
+          "${pkgs.coreutils}/bin/mkdir -p %h/.1password"
+          "${pkgs.coreutils}/bin/rm -f %h/.1password/agent.sock"
+        ];
         ExecStart = ''
           ${pkgs.socat}/bin/socat \
             UNIX-LISTEN:%h/.1password/agent.sock,fork \

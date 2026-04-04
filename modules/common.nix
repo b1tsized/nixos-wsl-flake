@@ -63,6 +63,10 @@
       unzip
     ];
 
+    home.sessionPath = [
+      "$HOME/.bun/bin"
+    ];
+
     home.sessionVariables = {
       SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
       EDITOR = "vim";
@@ -133,10 +137,22 @@
 
     programs.home-manager.enable = true;
 
+    # Write SSH public key for GitHub identity matching
+    home.file.".ssh/github_signing.pub".text = secrets.gitSigningKey;
+
     # SSH configuration
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
+      matchBlocks."github.com" = {
+        hostname = "github.com";
+        user = "git";
+        identityFile = "~/.ssh/github_signing.pub";
+        identitiesOnly = true;
+        extraOptions = {
+          IdentityAgent = "~/.1password/agent.sock";
+        };
+      };
       matchBlocks."*" = {
         extraOptions = {
           IdentityAgent = "~/.1password/agent.sock";
