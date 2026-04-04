@@ -38,8 +38,8 @@
       # JS/TS development
       nodejs_24
       bun
-      nodePackages.typescript-language-server
-      nodePackages.prettier
+      typescript
+      prettierd
       firebase-tools
 
       # Go development
