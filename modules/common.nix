@@ -3,7 +3,7 @@
 let
   prisma = prisma-utils.lib.prisma-factory {
     inherit pkgs;
-    hash = "";  # Leave empty first, nix will tell you the correct hash
+    hash = "sha256-oUPdHs8CWudLBbPo3VXBvYCUpRTjv99ub3POEbfkQ9s=";
     bunLock = /home/nixos/github.com/nocturneprintlabs.com/nocturne-app/bun.lock;
   };
 in
