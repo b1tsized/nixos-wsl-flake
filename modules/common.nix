@@ -49,6 +49,10 @@
       delve
       gcc
 
+      # Build tools
+      gnumake
+      postgresql
+
       # Search and CLI tools
       ripgrep
       fd
