@@ -138,7 +138,7 @@
     programs.home-manager.enable = true;
 
     # Write SSH public key for GitHub identity matching
-    home.file.".ssh/github_signing.pub".text = secrets.gitSigningKey;
+    home.file.".ssh/github_signing.pub".text = secrets.gitSigningKey + "\n";
 
     # SSH configuration
     programs.ssh = {
