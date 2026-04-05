@@ -83,16 +83,24 @@ In 1Password Desktop App:
 
 ## Using This Flake
 
-### 1. Clone the repository
+### 1. Bootstrap with git
+
+Fresh NixOS-WSL doesn't have git installed. Start a temporary shell with git:
+
+```bash
+nix-shell -p git
+```
+
+### 2. Clone the repository
 
 ```bash
 mkdir -p ~/github.com/b1tsized
 cd ~/github.com/b1tsized
-git clone git@github.com:b1tsized/nixos-wsl-flake.git
+git clone https://github.com/b1tsized/nixos-wsl-flake.git
 cd nixos-wsl-flake
 ```
 
-### 2. Create your secrets file
+### 3. Create your secrets file
 
 Secrets are stored outside the repo at `/home/nixos/.config/nixos-secrets/secrets.nix`:
 
@@ -112,27 +120,18 @@ Edit `/home/nixos/.config/nixos-secrets/secrets.nix` with your personal informat
 }
 ```
 
-### 3. Enable flakes (if not already enabled)
-
-```bash
-sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
-sudo nix-channel --update
-```
-
-Add to `/etc/nix/nix.conf`:
-```
-experimental-features = nix-command flakes
-```
-
-Or run with:
-```bash
-sudo nixos-rebuild switch --flake .#wsl-dev --experimental-features "nix-command flakes"
-```
-
 ### 4. Build and switch
 
 ```bash
-sudo nixos-rebuild switch --flake .#wsl-dev
+sudo nixos-rebuild switch --flake .#wsl-dev --option experimental-features "nix-command flakes" --impure
+```
+
+The `--impure` flag is required because secrets are stored outside the flake directory.
+
+After the first successful build, flakes will be enabled and you can use the shorter command:
+
+```bash
+sudo nixos-rebuild switch --flake .#wsl-dev --impure
 ```
 
 ## Repository Structure
@@ -179,7 +178,7 @@ sudo nixos-rebuild switch --flake .#wsl-dev
 
 | Command | Description |
 |---------|-------------|
-| `sudo nixos-rebuild switch --flake .#wsl-dev` | Apply configuration |
+| `sudo nixos-rebuild switch --flake .#wsl-dev --impure` | Apply configuration |
 | `nix flake update` | Update all dependencies |
 | `nix flake update nixpkgs` | Update only nixpkgs |
 | `nix flake lock --update-input home-manager` | Update only home-manager |
@@ -231,5 +230,5 @@ wsl -d NixOS
 Ensure you're in the repository directory when running `nixos-rebuild`:
 ```bash
 cd ~/github.com/b1tsized/nixos-wsl-flake
-sudo nixos-rebuild switch --flake .#wsl-dev
+sudo nixos-rebuild switch --flake .#wsl-dev --impure
 ```
