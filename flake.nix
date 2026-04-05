@@ -13,11 +13,9 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    prisma-utils.url = "github:VanCoding/nix-prisma-utils";
   };
 
-  outputs = { self, nixpkgs, home-manager, nixos-wsl, prisma-utils, ... }:
+  outputs = { self, nixpkgs, home-manager, nixos-wsl, ... }:
     let
       system = "x86_64-linux";
       # Secrets are stored outside the repo at /home/nixos/.config/nixos-secrets/secrets.nix
@@ -26,7 +24,7 @@
       nixosConfigurations = {
         wsl-dev = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit secrets prisma-utils; };
+          specialArgs = { inherit secrets; };
           modules = [
             nixos-wsl.nixosModules.wsl
             home-manager.nixosModules.home-manager
